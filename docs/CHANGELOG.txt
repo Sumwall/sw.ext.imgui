@@ -100,6 +100,8 @@ Other changes:
   of WantVisible. This is set in the same structure because activating text input generally
   requires providing a window to the backend. (#8584, #6341)
 - Misc: added extra operators to ImVec4 in IMGUI_DEFINE_MATH_OPERATORS block. (#8510) [@gan74]
+- Backends: Win32: Fixed an issue where externally losing mouse capture (due to e.g. focus loss)
+  would fail to claim it again the next subsequent click. (#8594)
 - Backends: SDL2, SDL3, OSX: Fill gamepad inputs and set ImGuiBackendFlags_HasGamepad
   regardless of ImGuiConfigFlags_NavEnableGamepad being set. (#8508)
 - Backends: SDL2, SDL3: don't attempt to call SDL_CaptureMouse() on drivers where we don't
@@ -111,9 +113,12 @@ Other changes:
   way to call SDL_StartTextInput(), without IME being necessarily visible. (#8584)
 - Backends: SDLGPU3: Made ImGui_ImplSDLGPU3_PrepareDrawData() reuse GPU Transfer Buffers which
   were unusually slow to recreate every frame. Much faster now. (#8534) [@ocornut, @TheMode]
+- Backends: SDLGPU3: added support for ImDrawCallback_ResetRenderState. (#8599)
 - Backends: Vulkan: Deep-copy ImGui_ImplVulkan_InitInfo::PipelineRenderingCreateInfo's
   pColorAttachmentFormats buffer when set, in order to reduce common user-error of
   specifying a pointer to data that gets out of scope. (#8282)
+- Examples: DirectX12+Win32: also test for IsIconic() for sleeping since we don't seem to
+  get a DXGI_STATUS_OCCLUDED signal when minimized. (#8603) [@dooann]
 
 
 -----------------------------------------------------------------------
