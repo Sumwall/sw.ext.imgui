@@ -613,7 +613,12 @@ static void ImGui_ImplSDL3_UpdateMouseData()
         // (Optional) Set OS mouse position from Dear ImGui if requested (rarely used, only when io.ConfigNavMoveSetMousePos is enabled by user)
         if (io.WantSetMousePos)
             SDL_WarpMouseInWindow(bd->Window, io.MousePos.x, io.MousePos.y);
-
+        /// @SUMWALL-BEGIN: <s.camara>
+        /// ImGui SDL3 backend calculates the mouse position when the window is on focus (ImGui_ImplSDL3_UpdateMouseData) in a way that does not work well with our application:
+		/// - It does not take display scale into consideration
+		/// - It uses global mouse position, but SDL3 popups and tooltips use relative position to the parent, causing issues with mouse interaction
+		/// So far, it seems this mouse position calculation is redundant and not needed, and it is causing some annoying issues.
+        /*
         // (Optional) Fallback to provide mouse position when focused (SDL_EVENT_MOUSE_MOTION already provides this when hovered or captured)
         const bool is_relative_mouse_mode = SDL_GetWindowRelativeMouseMode(bd->Window);
         if (bd->MouseCanUseGlobalState && bd->MouseButtonsDown == 0 && !is_relative_mouse_mode)
@@ -625,6 +630,8 @@ static void ImGui_ImplSDL3_UpdateMouseData()
             SDL_GetWindowPosition(focused_window, &window_x, &window_y);
             io.AddMousePosEvent(mouse_x_global - window_x, mouse_y_global - window_y);
         }
+        */
+        /// @SUMWALL-END: <s.camara>
     }
 }
 
